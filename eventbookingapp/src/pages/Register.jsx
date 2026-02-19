@@ -17,7 +17,7 @@ export default function Register() {
     setError(null);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/register/", {
+      const response = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

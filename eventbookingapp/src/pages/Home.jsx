@@ -34,7 +34,7 @@ export default function Home() {
     queryKey: ["events", appliedFilters],
     queryFn: async () => {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/events/?status=Published"
+        "https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/?status=Published"
       );
 
       if (!response.ok) throw new Error("Failed to load events");

@@ -28,7 +28,7 @@ export default function MyEvents() {
       return;
     }
 
-    fetch(`http://127.0.0.1:8000/api/me/`, {
+    fetch(`https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/me/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

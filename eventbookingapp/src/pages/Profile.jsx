@@ -42,7 +42,7 @@ export default function Profile() {
       }
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/me/", {
+        const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/me/", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

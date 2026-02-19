@@ -31,7 +31,7 @@ export default function EventDetails() {
     const fetchReservedSeats = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/events/${eventId}/reserved-seats/`,
+          `https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/${eventId}/reserved-seats/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

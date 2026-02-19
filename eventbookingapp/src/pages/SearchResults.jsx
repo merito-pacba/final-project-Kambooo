@@ -25,7 +25,7 @@ export default function SearchResults() {
     queryKey: ["searchEvents", searchQuery],
     queryFn: async () => {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://127.0.0.1:8000/api/events/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
