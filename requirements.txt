@@ -12,3 +12,4 @@ pyjwt
 pymongo
 python-dotenv
 whitenoise
+decouple
