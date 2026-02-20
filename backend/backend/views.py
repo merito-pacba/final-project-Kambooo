@@ -7,7 +7,7 @@ import uuid
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.contrib.auth.hashers import make_password, check_password
-
+from datetime import datetime
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -161,23 +161,32 @@ def fetch_events(request):
     return Response(event_list)
 
 
+from datetime import datetime # Ensure this is imported at the top
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_event(request):
     data = request.data
     try:
-        # Numeric validation
+        # 1. Convert price and capacity (Existing logic)
         price = float(data.get("price", 0))
         capacity = int(data.get("capacity", 0))
-        if price < 0 or capacity < 0:
-            return Response({"error": "Price and capacity must be positive"}, status=400)
+
+        # 2. NEW: Convert Date String to Python Date Object
+        date_str = data.get("date")
+        if not date_str:
+            return Response({"error": "Date is required"}, status=400)
+        
+        # Converts "YYYY-MM-DD" string to a date object
+        event_date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
         user = User.objects.get(id=request.user.id)
+        
         event = Event(
             title=data.get("title"),
             description=data.get("description"),
             category=data.get("category"),
-            date=data.get("date"),
+            date=event_date,  # <--- Use the converted date object here!
             time=data.get("time"),
             location=data.get("location"),
             city=data.get("city"),
@@ -193,7 +202,7 @@ def create_event(request):
         event.save()
         return Response({"success": True, "id": str(event.id)}, status=status.HTTP_201_CREATED)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"error": f"Backend Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["DELETE"])
