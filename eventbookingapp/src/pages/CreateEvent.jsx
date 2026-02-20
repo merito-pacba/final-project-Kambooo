@@ -102,7 +102,7 @@ export default function CreateEvent() {
   const createEventMutation = useMutation({
     mutationFn: async (data) => {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://127.0.0.1:8000/api/events/create/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/create/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +141,7 @@ export default function CreateEvent() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("http://127.0.0.1:8000/api/upload/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net//api/upload/", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
