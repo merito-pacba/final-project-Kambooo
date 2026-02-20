@@ -368,3 +368,19 @@ def update_booking(request, booking_id):
         return Response({"success": True})
     except DoesNotExist:
         return Response({"error": "Booking not found"}, status=404)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_reserved_seats(request, event_id):
+    bookings = Booking.objects(
+        event_id=event_id,
+        booking_status="Confirmed"
+    )
+
+    reserved = [
+        {"row": seat.row, "column": seat.column}
+        for booking in bookings
+        for seat in booking.seats
+    ]
+
+    return Response(reserved)
