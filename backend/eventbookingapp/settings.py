@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from mongoengine import connect
 from datetime import timedelta
-from decouple import config
+import os  # <- Added for environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "replace-with-a-local-default-for-dev")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -38,7 +38,7 @@ SIMPLE_JWT = {
 }
 
 
-
+# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,7 +67,6 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-
 ROOT_URLCONF = 'eventbookingapp.urls'
 
 TEMPLATES = [
@@ -88,13 +87,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbookingapp.wsgi.application'
 
 
+# Database connection using environment variables
 connect(
-    db=config("MONGO_DB_NAME"),
-    host=config("COSMOS_CONNECTION_STRING"),
+    db=os.environ.get("MONGO_DB_NAME"),
+    username=os.environ.get("MONGO_USER"),       # optional if using user/pass
+    password=os.environ.get("MONGO_PASSWORD"),   # optional if using user/pass
+    host=os.environ.get("MONGO_HOST"),           # full connection string
     alias="default"
 )
 
 
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -111,12 +114,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 
 MEDIA_URL = "/media/"
