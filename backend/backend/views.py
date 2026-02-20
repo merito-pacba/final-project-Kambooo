@@ -238,12 +238,10 @@ def create_booking(request):
         if not event_id or not seats_data:
             return Response({"error": "Missing booking details"}, status=400)
 
-        # Prevent organizer from booking own event
         event = Event.objects.get(id=event_id)
         if event.created_by == request.user.email:
             return Response({"error": "Organizers cannot book their own events"}, status=400)
 
-        # Check seat collisions
         active_bookings = Booking.objects(event_id=event_id, booking_status="Confirmed")
         taken_seats = {(s.row, s.column) for b in active_bookings for s in b.seats}
 
