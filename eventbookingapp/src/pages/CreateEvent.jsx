@@ -141,7 +141,7 @@ export default function CreateEvent() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net//api/upload/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/upload/", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
