@@ -71,7 +71,7 @@ export default function Profile() {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/me/update/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/me/update/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default function Profile() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("http://127.0.0.1:8000/api/upload/", {
+      const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/upload/", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

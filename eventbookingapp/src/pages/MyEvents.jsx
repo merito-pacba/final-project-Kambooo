@@ -47,7 +47,7 @@ export default function MyEvents() {
     enabled: !!user,
     queryFn: async () => {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/events/?created_by=me`,
+        `https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/?created_by=me`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -60,7 +60,7 @@ export default function MyEvents() {
   const deleteEventMutation = useMutation({
     mutationFn: async (eventId) => {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/events/delete/${eventId}/`,
+        `https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/delete/${eventId}/`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

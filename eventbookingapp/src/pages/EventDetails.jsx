@@ -51,7 +51,7 @@ export default function EventDetails() {
     const fetchUser = async () => {
       if (!token) return;
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/me/", {
+        const res = await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/me/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;
@@ -69,7 +69,7 @@ export default function EventDetails() {
     queryKey: ["event", eventId],
     queryFn: async () => {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/events/?id=${eventId}`
+        `https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/?id=${eventId}`
       );
       const data = await res.json();
       return data[0] || null;
@@ -82,7 +82,7 @@ export default function EventDetails() {
     queryFn: async () => {
       if (!event) return [];
       const res = await fetch(
-        `http://127.0.0.1:8000/api/events/?status=Published&category=${event.category}`
+        `https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/events/?status=Published&category=${event.category}`
       );
       const data = await res.json();
       return data.filter((e) => e._id !== event._id).slice(0, 4);
@@ -100,7 +100,7 @@ export default function EventDetails() {
         ? user.favorite_events.filter((id) => id !== event._id)
         : [...(user.favorite_events || []), event._id];
 
-      await fetch("http://127.0.0.1:8000/api/me/", {
+      await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/me/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export default function EventDetails() {
     }
     setIsBooking(true);
     try {
-      await fetch("http://127.0.0.1:8000/api/bookings/", {
+      await fetch("https://evently-f5ergjbxcch2g3hk.switzerlandnorth-01.azurewebsites.net/api/bookings/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
