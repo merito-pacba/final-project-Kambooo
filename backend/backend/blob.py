@@ -8,7 +8,7 @@ def upload_image_to_blob(file):
     )
 
     container_client = blob_service.get_container_client(
-        os.environ.get("AZURE_CONTAINER_NAME", "images")
+        os.environ.get("AZURE_CONTAINER_NAME", "media")
     )
 
     blob_name = f"{uuid.uuid4()}-{file.name}"
