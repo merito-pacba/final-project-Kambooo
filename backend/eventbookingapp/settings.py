@@ -49,6 +49,12 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',
+    }
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'backend.authentication.MongoJWTAuthentication',
