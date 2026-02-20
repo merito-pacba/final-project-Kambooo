@@ -13,3 +13,4 @@ pymongo
 python-dotenv
 whitenoise
 python-decouple==3.8
+azure-storage-blob

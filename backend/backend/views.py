@@ -4,6 +4,7 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 import json
 import os
 import uuid
+from backend.blob import upload_image_to_blob
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.contrib.auth.hashers import make_password, check_password
@@ -284,7 +285,6 @@ def get_user_bookings(request):
     return Response(data)
 
 
-# --- FILE UPLOAD ---
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -294,36 +294,26 @@ def upload_file(request):
 
     file = request.FILES["file"]
 
-    # Security checks
     if file.size > 2 * 1024 * 1024:
         return Response({"error": "File exceeds 2MB limit"}, status=400)
 
-    allowed_exts = ['.jpg', '.jpeg', '.png', '.webp']
+    allowed_exts = [".jpg", ".jpeg", ".png", ".webp"]
     ext = os.path.splitext(file.name)[1].lower()
     if ext not in allowed_exts:
         return Response({"error": "Invalid file type"}, status=400)
 
-    filename = f"{uuid.uuid4()}{ext}"
-    upload_path = os.path.join("uploads", filename)
-    saved_path = default_storage.save(upload_path, file)
-    file_url = request.build_absolute_uri(settings.MEDIA_URL + saved_path)
+    try:
+        blob_url = upload_image_to_blob(file)
 
-    return Response({"file_url": file_url}, status=status.HTTP_201_CREATED)
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_reserved_seats(request, event_id):
-    """Returns a list of seats already booked for a specific event"""
-    bookings = Booking.objects(event_id=event_id, booking_status="Confirmed")
-    reserved = [
-        {"row": seat.row, "column": seat.column}
-        for booking in bookings
-        for seat in booking.seats
-    ]
-    return Response(reserved)
-
-
+        return Response(
+            {"file_url": blob_url},
+            status=status.HTTP_201_CREATED
+        )
+    except Exception as e:
+        return Response(
+            {"error": f"Upload failed: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def list_bookings(request):
